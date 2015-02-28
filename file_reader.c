@@ -1,38 +1,22 @@
 #include <stdio.h>
-#include <string.h>
-#include <ctype.h>
 #include <stdlib.h>
 
-#include "weather.c"
+#define MAX_STRING_LENGTH 35
+#define MAX_LINE_LENGTH 150
 
-int parse_file()
+char** read_lines_from_file(char*);
+
+char** read_lines_from_file(char* file_name)
 {
-  FILE *weather_data_file;
-  char line[100];
-  struct weather weather_data[31];
-  int i = 0, j;
-
-  weather_data_file = fopen("weather.dat", "r");
-  while(fgets(line, sizeof(line), weather_data_file) != NULL)
+  FILE *file;
+  char **line;
+  int i;
+  file = fopen(file_name, "r");
+  line = malloc(sizeof(char*) * MAX_STRING_LENGTH);
+  for(i = 0; i < 33; i++)
     {
-      char *value[3];
-      value[0] = strtok(line, " *");
-      if(isdigit(value[0][0]))
-        {
-          for(j = 1; j <= 2; j++)
-            value[j] = strtok(NULL, " *");
-          weather_data[i].day = atoi(value[0]);
-          weather_data[i].max_temperature = atoi(value[1]);
-          weather_data[i].min_temperature = atoi(value[2]);
-        }
+      line[i] = malloc(sizeof(char) * MAX_LINE_LENGTH);
+      fgets(line[i], sizeof(char) * MAX_LINE_LENGTH, file);
     }
-  fclose(weather_data_file);
-
-  return 0;
-}
-
-int main()
-{
-  parse_file();
-  return 0;
+  return line;
 }
