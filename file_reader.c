@@ -9,14 +9,12 @@ char** read_lines_from_file(char*);
 char** read_lines_from_file(char* file_name)
 {
   FILE *file;
-  char **line;
+  char **lines;
   int i;
   file = fopen(file_name, "r");
-  line = malloc(sizeof(char*) * MAX_STRING_LENGTH);
-  for(i = 0; i < 33; i++)
-    {
-      line[i] = malloc(sizeof(char) * MAX_LINE_LENGTH);
-      fgets(line[i], sizeof(char) * MAX_LINE_LENGTH, file);
-    }
-  return line;
+  lines = malloc(sizeof(char*) * MAX_STRING_LENGTH);
+  for(i = 0, lines[0] = lines[i] = malloc(sizeof(char) * MAX_LINE_LENGTH);
+      fgets(lines[i], sizeof(char) * MAX_LINE_LENGTH, file) != NULL;
+      i++, lines[i] = malloc(sizeof(char) * MAX_LINE_LENGTH));
+  return lines;
 }
