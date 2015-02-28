@@ -2,11 +2,9 @@
 #include <string.h>
 #include <ctype.h>
 
-#include "file_reader.c"
 #include "weather.c"
 
 #define MAX_DAY_COUNT 30
-
 
 struct weather* get_weather_data(char** line)
 {
@@ -32,20 +30,3 @@ struct weather* get_weather_data(char** line)
 
   return weather_data;
 }
-
-
-
-int main()
-{
-  int i;
-  char **lines = read_lines_from_file("weather.dat");
-  struct weather *weather_data = get_weather_data(lines);
-  
-  for(i = 0; i < MAX_DAY_COUNT; i++)
-    {
-      printf("%d\n", weather_data[i].day);
-    }
-
-  return 0;
-}
-
