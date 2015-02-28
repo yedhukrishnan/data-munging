@@ -1,50 +1,51 @@
 #include <stdio.h>
-//#include <string.h>
-//#include <ctype.h>
-//#include <stdlib.h>
+#include <string.h>
+#include <ctype.h>
 
-//#include "weather.c"
+#include "file_reader.c"
+#include "weather.c"
 
-int main()
+#define MAX_DAY_COUNT 30
+
+
+struct weather* get_weather_data(char** line)
 {
-  FILE *weather_data_file;
-  char line[31][200];
-  //struct weather weather_data[31];
-  int i = 0, j;
+  struct weather *weather_data;
+  int i = 0, counter = 0;
+
+  weather_data = malloc(sizeof(struct weather) * MAX_DAY_COUNT);
   
-  weather_data_file = fopen("weather.dat", "r");
-  for(i = 0; fgets(line[i], sizeof(line[i]), weather_data_file) != NULL; i++);
-  for(i = 0; i < 31; i++)
-    puts(line[i]);
-  fclose(weather_data_file);
-  /*
-  weather_data_file = fopen("weather.dat", "r");
-  while(fgets(line, sizeof(line), weather_data_file) != NULL)
+  for(i = 0; i < 33; i++)
     {
-      char *value[3];
-      value[0] = strtok(line, " *");
-      if(isdigit(value[0][0]))
+      char *day, *max_temp, *min_temp;
+      day = strtok(line[i], " *");
+      if(isdigit(day[0]))
         {
-          for(j = 1; j <= 2; j++)
-            value[j] = strtok(NULL, " *");
-          weather_data[i].day = atoi(value[0]);
-          weather_data[i].max_temperature = atoi(value[1]);
-          weather_data[i].min_temperature = atoi(value[2]);
+          max_temp = (char*) strtok(NULL, " *");
+          min_temp = (char*) strtok(NULL, " *");
+          weather_data[counter].day = atoi(day);
+          weather_data[counter].max_temperature = atoi(max_temp);
+          weather_data[counter].min_temperature = atoi(min_temp);
+          counter++;
         }
     }
-  
-  */
-  puts("lol");
-  return 0;
+
+  return weather_data;
 }
 
 
-/*
+
 int main()
 {
-  puts("something wrong");
-  read_lines_from_file();
-  puts("lol2");
+  int i;
+  char **lines = read_lines_from_file("weather.dat");
+  struct weather *weather_data = get_weather_data(lines);
+  
+  for(i = 0; i < MAX_DAY_COUNT; i++)
+    {
+      printf("%d\n", weather_data[i].day);
+    }
+
   return 0;
 }
-*/
+
